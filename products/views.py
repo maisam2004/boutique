@@ -15,12 +15,11 @@ class ProductListView(ListView):
     template_name = "products/products.html"
     context_object_name = 'products_list'
 
-    def get_queryset(self):  # sourcery skip: use-named-expression
+    def get_queryset(self):  
+
         queryset = self.model.objects.all()
 
-        # Filter by category
-        categories = self.request.GET.get('category')
-        if categories:
+        if categories := self.request.GET.get('category'):
             categories = categories.split(',')
             queryset = queryset.filter(category__name__in=categories)
 
@@ -29,6 +28,24 @@ class ProductListView(ListView):
         if query:
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             queryset = queryset.filter(queries)
+
+
+        sort_by = self.request.GET.get('sort')
+        direction = self.request.GET.get('dirction', 'asc')
+
+    # Apply default sorting if no specific sorting is requested
+        sort_by_default = '-created_at'  # Sort by creation date in descending order
+
+        if sort_by == 'price':
+            sort_by_field = 'price'
+        elif sort_by == 'rating':
+            sort_by_field = '-rating'
+        elif sort_by == 'category':
+            sort_by_field = 'category__name'
+        else:
+            sort_by_field = sort_by_default
+
+        queryset = queryset.order_by(f'{"-" if direction == "desc" else ""}{sort_by_field}')
 
         return queryset
 

@@ -14,6 +14,19 @@
 {% block content %}
 <div class="overlay"></div>
 <div class="container-fluid ">
+    {% if search_term %}
+        <p>Search Term: <span class='text-primary'>{{ search_term }}</span></p>
+    {% endif %}
+
+    <!-- Display the current categories -->
+    {% if current_categories %}
+        <p>Current Categories:</p>
+        <ul>
+            {% for category in current_categories %}
+                <li class='text-primary'>{{ category.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <div class="row">
        <div class="col text-center mt-3">
         <h2 class="logo-font">Products</h2>
