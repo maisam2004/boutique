@@ -1,0 +1,23 @@
+{% block postloadjs %}
+{{ block.super }}
+<script type="text/javascript">
+   const sortSelector = document.getElementById('sort-selector');
+
+sortSelector.addEventListener('change', function() {
+    const selectedVal = this.value;
+    const currentUrl = new URL(window.location);
+
+    if (selectedVal !== "reset") {
+        const [sort, direction] = selectedVal.split("_");
+        currentUrl.searchParams.set('sort', sort);
+        currentUrl.searchParams.set('dirction', direction);
+    } else {
+        currentUrl.searchParams.delete('sort');
+        currentUrl.searchParams.delete('dirction');
+    }
+
+    window.location.replace(currentUrl);
+});
+
+
+</script>

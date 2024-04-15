@@ -74,6 +74,18 @@ a.category-badge > span.badge:hover {
     color: #fff !important;
 }
 
+.fa-arrow-up{
+    color:blue !important;
+    height:42px !important;
+    width:42px !important;
+    position: fixed  !important;
+    bottom:10px  !important;
+    right:10px  !important;
+}
+.btt-link{
+    cursor:pointer  !important;
+}
+
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */

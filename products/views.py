@@ -34,7 +34,8 @@ class ProductListView(ListView):
             direction = self.request.GET.get('dirction', 'asc')
 
         # Apply default sorting if no specific sorting is requested
-            sort_by_default = '-created_at'  # Sort by creation date in descending order
+            #sort_by_default = '-created_at'  # Sort by creation date in descending order
+            sort_by_default = 'id'
 
             if sort_by == 'price':
                 sort_by_field = 'price'
