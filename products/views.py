@@ -39,7 +39,7 @@ class ProductListView(ListView):
             if sort_by == 'price':
                 sort_by_field = 'price'
             elif sort_by == 'rating':
-                sort_by_field = '-rating'
+                sort_by_field = 'rating'
             elif sort_by == 'category':
                 sort_by_field = 'category__name'
             else:
@@ -51,11 +51,19 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         # Add search term and current categories to context
+        
         context['search_term'] = self.request.GET.get('q')
         context['current_categories'] = Category.objects.filter(name__in=self.request.GET.get('category', '').split(','))
-        
+       # Add current sorting information to context
+        sort_by = self.request.GET.get('sort')
+        direction = self.request.GET.get('dirction', 'asc')
+
+        sort_value = f"{sort_by}_{direction}" if sort_by else "None_None"
+        context['current_sorting'] = sort_value
+        context['products'] = self.get_queryset()
+
         return context
    
 
