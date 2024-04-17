@@ -18,12 +18,33 @@ class AddToBagView(View):
         
         bag = request.session.get('bag', {})
 
-        if item_id in bag:
-            bag[item_id] += quantity
-        else:
-            bag[item_id] = quantity
+       
+
+        size = None
+        if 'product_size' in request.POST:
+            size = request.POST['product_size']
+
 
         request.session['bag'] = bag
+
+        if size:
+            if item_id in list(bag.keys()):
+                if size in bag[item_id]['items_by_size'].keys():
+                    bag[item_id]['items_by_size'][size] += quantity
+                else:
+                    bag[item_id]['items_by_size'][size] = quantity
+            else:
+                bag[item_id] = {'items_by_size': {size: quantity}}
+        else:
+             if item_id in list(bag.keys()):
+                bag[item_id] += quantity
+             else:
+                bag[item_id] = quantity
+
+
+
+
+
         # Print bag contents to console
         print("Current shopping bag contents:", request.session['bag'])
         return redirect(redirect_url)
